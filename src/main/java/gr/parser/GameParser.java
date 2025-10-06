@@ -15,9 +15,8 @@ import java.util.*;
 import java.util.regex.*;
 
 public class GameParser {
-
     // === Data Models ===
-    static class Game {
+    public static class Game {
         String label;
         List<Integer> bets = new ArrayList<>();      // supports one or two bets
         Hand playerHand;
@@ -80,7 +79,7 @@ public class GameParser {
 
     // === Parsing Methods ===
 
-    public static Game parse(String line) {
+    public Game parse(String line) {
         line = line.trim();
 
         Game game = new Game();
@@ -124,7 +123,7 @@ public class GameParser {
      *   T1 {5}
      *   T2 {5,10}
      */
-    private static void parseLabelAndBet(String text, Game game) {
+    void parseLabelAndBet(String text, Game game) {
         Pattern p = Pattern.compile("(\\w+)\\s*\\{\\s*(\\d+)\\s*(?:,\\s*(\\d+)\\s*)?\\}");
         Matcher m = p.matcher(text);
         if (!m.find())
@@ -143,7 +142,7 @@ public class GameParser {
      *   HUEY 9+2+H!5
      *   DEWEY 8+8+D!5
      */
-    private static Hand parseHand(String text) {
+    Hand parseHand(String text) {
         // Expanded to include HUEY and DEWEY as valid players
         Pattern p = Pattern.compile("(YOU|DEALER|HUEY|DEWEY)\\s+([A-Z0-9+!{}\\,]+)");
         Matcher m = p.matcher(text);
@@ -179,7 +178,7 @@ public class GameParser {
      *   D!10
      *   H!5
      */
-    private static Directive parseDirective(String directivePart) {
+    Directive parseDirective(String directivePart) {
         Directive dir = new Directive();
         directivePart = directivePart.trim();
 
@@ -226,7 +225,7 @@ public class GameParser {
      * Parses one or two outcomes separated by commas.
      * Example: "WIN{5}" or "WIN{5}, PUSH{10}"
      */
-    private static List<Outcome> parseOutcomes(String text) {
+     List<Outcome> parseOutcomes(String text) {
         List<Outcome> outcomes = new ArrayList<>();
         String[] parts = text.split(",");
         for (String part : parts) {
@@ -237,8 +236,8 @@ public class GameParser {
         return outcomes;
     }
 
-    private static Outcome parseOutcome(String text) {
-        Pattern p = Pattern.compile("(WIN|LOSE|PUSH|BUST|BJ|BLACKJACK)\\s*\\{(\\d+)\\}",
+    Outcome parseOutcome(String text) {
+        Pattern p = Pattern.compile("(WIN|LOSE|PUSH|BUST|BJ|BLACKJACK|CHARLIE)\\s*\\{(\\d+)\\}",
                 Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(text);
         if (!m.find())
@@ -257,8 +256,10 @@ public class GameParser {
                 "T3 {5}: DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}"
         };
 
+        GameParser parser = new GameParser();
+
         for (String line : samples) {
-            Game g = parse(line);
+            Game g = parser.parse(line);
             System.out.println(g);
         }
     }

@@ -21,9 +21,14 @@ public class GameParser {
         List<Integer> bets = new ArrayList<>();      // supports one or two bets
 //        Hand playerHand;
 //        Hand dealerHand;
-        List<Hand> hands = new ArrayList<>();
+        final List<Hand> hands = new ArrayList<>();
         List<Outcome> outcomes = new ArrayList<>();  // supports one or two outcomes
 
+        /**
+         * Gets a player hand.
+         * @param player Player
+         * @return Hand
+         */
         public Hand whodat(String player) {
             for(Hand hand: hands) {
                 if(hand.who.equals(player))
@@ -32,23 +37,32 @@ public class GameParser {
             return null;
         }
 
+        /**
+         * Gets YOU hand.
+         * @return Hand
+         */
         public Hand you() {
             return whodat("YOU");
         }
 
+        /**
+         * Gets DEALER hand
+         * @return Hand
+         */
         public Hand dealer() {
             return whodat("DEALER");
         }
 
         @Override
         public String toString() {
-            StringBuilder buffer = new StringBuilder();
+            StringBuilder handsBuffer = new StringBuilder();
             for(Hand hand: hands) {
-                buffer.append(hand.toString()).append("|");
+                handsBuffer.append(hand).append(", ");
             }
+
             return String.format(
-                    "Game[label=%s, bets=%s, hands=|%s, outcomes=%s]",
-                    label, bets, buffer, outcomes);
+                    "Game[label=%s, bets=%s, hands=%soutcomes=%s]",
+                    label, bets, handsBuffer, outcomes);
         }
     }
 

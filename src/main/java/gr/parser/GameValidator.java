@@ -39,7 +39,7 @@ public class GameValidator {
         }
 
         // --- Rule 1: Bets vs Outcomes ---
-        boolean youSplit = hasYouSplit(game.playerHand);
+        boolean youSplit = hasYouSplit(game.you());
         int bets = game.bets.size();
         int outcomes = game.outcomes.size();
 
@@ -61,8 +61,11 @@ public class GameValidator {
         validateSplits(game, errors);
 
         // --- Rule 3: Only YOU, HUEY, DEWEY can hit or double ---
-        validateDirectiveAccess(game.playerHand, errors);
-        validateDirectiveAccess(game.dealerHand, errors);
+        for(GameParser.Hand hand: game.hands) {
+            validateDirectiveAccess(hand, errors);
+        }
+//        validateDirectiveAccess(game.playerHand, errors);
+//        validateDirectiveAccess(game.dealerHand, errors);
 
         // --- Rule 4: Must have YOU and DEALER ---
         validatePlayersPresent(game, errors);
@@ -108,7 +111,7 @@ public class GameValidator {
 
     /** Validates split details: exactly two subhands, each with ≥2 cards. */
     private static void validateSplits(GameParser.Game game, List<String> errors) {
-        GameParser.Hand[] hands = {game.playerHand, game.dealerHand};
+        GameParser.Hand[] hands = {game.you(), game.dealer()};
         for (GameParser.Hand h : hands) {
             if (h == null || h.directive == null || h.directive.type != 'P')
                 continue;
@@ -136,10 +139,10 @@ public class GameValidator {
     /** Ensures that both YOU and DEALER are present. */
     private static void validatePlayersPresent(GameParser.Game game, List<String> errors) {
         Set<String> players = new HashSet<>();
-        if (game.playerHand != null)
-            players.add(game.playerHand.who);
-        if (game.dealerHand != null)
-            players.add(game.dealerHand.who);
+        if (game.you() != null)
+            players.add(game.you().who);
+        if (game.dealer() != null)
+            players.add(game.dealer().who);
 
         if (!players.contains("YOU"))
             errors.add("Rule 4 violation: Missing YOU player.");
@@ -154,10 +157,10 @@ public class GameValidator {
     /** Ensures each player (including DEALER) is given only once. */
     private static void validateUniquePlayers(GameParser.Game game, List<String> errors) {
         List<String> participants = new ArrayList<>();
-        if (game.playerHand != null)
-            participants.add(game.playerHand.who);
-        if (game.dealerHand != null)
-            participants.add(game.dealerHand.who);
+        if (game.you() != null)
+            participants.add(game.you().who);
+        if (game.dealer() != null)
+            participants.add(game.dealer().who);
 
         Set<String> seen = new HashSet<>();
         for (String who : participants) {

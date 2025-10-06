@@ -19,19 +19,40 @@ public class GameParser {
     public static class Game {
         String label;
         List<Integer> bets = new ArrayList<>();      // supports one or two bets
-        Hand playerHand;
-        Hand dealerHand;
+//        Hand playerHand;
+//        Hand dealerHand;
+        List<Hand> hands = new ArrayList<>();
         List<Outcome> outcomes = new ArrayList<>();  // supports one or two outcomes
+
+        public Hand whodat(String player) {
+            for(Hand hand: hands) {
+                if(hand.who.equals(player))
+                    return hand;
+            }
+            return null;
+        }
+
+        public Hand you() {
+            return whodat("YOU");
+        }
+
+        public Hand dealer() {
+            return whodat("DEALER");
+        }
 
         @Override
         public String toString() {
+            StringBuilder buffer = new StringBuilder();
+            for(Hand hand: hands) {
+                buffer.append(hand.toString()).append("|");
+            }
             return String.format(
-                    "Game[label=%s, bets=%s, player=%s, dealer=%s, outcomes=%s]",
-                    label, bets, playerHand, dealerHand, outcomes);
+                    "Game[label=%s, bets=%s, hands=|%s, outcomes=%s]",
+                    label, bets, buffer, outcomes);
         }
     }
 
-    static class Hand {
+    public static class Hand {
         String who;
         List<String> cards = new ArrayList<>();
         Directive directive; // optional directive: P, D, H
@@ -109,8 +130,12 @@ public class GameParser {
         if (hands.length != 2)
             throw new IllegalArgumentException("Expected player and dealer hands separated by '|'");
 
-        game.playerHand = parseHand(hands[0].trim());
-        game.dealerHand = parseHand(hands[1].trim());
+        for(int handno=0; handno <hands.length; handno++) {
+            Hand hand = parseHand(hands[handno].trim());
+            game.hands.add(hand);
+        }
+//        game.playerHand = parseHand(hands[0].trim());
+//        game.dealerHand = parseHand(hands[1].trim());
 
         // Step 3: parse one or two outcomes
         game.outcomes = parseOutcomes(rightPart);

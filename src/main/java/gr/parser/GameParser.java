@@ -141,7 +141,7 @@ public class GameParser {
 
         // Step 2: split player and dealer
         String[] hands = body.split("\\|");
-        if (hands.length != 2)
+        if (hands.length < 2)
             throw new IllegalArgumentException("Expected player and dealer hands separated by '|'");
 
         for(int handno=0; handno <hands.length; handno++) {
@@ -291,8 +291,9 @@ public class GameParser {
     public static void main(String[] args) {
         String[] samples = {
                 "T1 {5}: YOU 7+7+P!{2+4,5+9} | DEALER 10+6 >> WIN{5}, PUSH{5}",
-                "T2 {5,10}: HUEY 10+2+D!10 | DEALER 9+8 >> LOSE{5}, LOSE{10}",
-                "T3 {5}: DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}"
+                "T2 {5}: HUEY 10+2+D!7 | DEALER 9+8 >> WIN{10}",
+                "T3 {5}: DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}",
+                "T4 {5,15}: YOU 3+3 | DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}, WIN{15}"
         };
 
         GameParser parser = new GameParser();

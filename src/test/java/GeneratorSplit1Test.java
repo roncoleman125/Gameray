@@ -11,19 +11,19 @@
  */
 
 import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
 import ray.model.Game;
 import ray.parser.Parser;
+import ray.generator.ShoeBuilder;
 
 /**
  * This class...
  *
  * @author ronnc
  */
-public class Generator1Test extends TestCase {
+public class GeneratorSplit1Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: You 3+10 | Dealer 4+10+7 >> LOSE{5}";
+        String ray = "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
 

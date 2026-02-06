@@ -20,10 +20,10 @@ import ray.parser.Parser;
  *
  * @author ronnc
  */
-public class Generator1Test extends TestCase {
+public class Generator2Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: You 3+10 | Dealer 4+10+7 >> LOSE{5}";
+        String ray = "T0 {5}: You 3+K | Dealer 4+10+7 >> LOSE{5}";
 
         Parser parser = new Parser();
 

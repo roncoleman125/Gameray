@@ -193,7 +193,25 @@ public class ShoeBuilder {
 
         Suit suit = suits[suitno];
 
-        return indent(2)+"cards.add(new Card("+rank+", "+suit+"));";
+        return indent(2)+"cards.add(new Card("+getRank(rank)+", "+suit+"));";
+    }
+
+    String getRank(String rank) {
+        if(rank.equals("10"))
+            return rank;
+
+        assert rank.length() == 1: "bad rank "+rank;
+
+        switch(rank) {
+            case "A" -> { return "Card.ACE";}
+            case "K" -> { return "Card.KING";}
+            case "Q" -> { return "Card.QUEEN";}
+            case "J" -> { return "Card.JACK";}
+        }
+
+        assert Character.isDigit(rank.charAt(0)): "bad rank digit "+rank;
+        assert rank.charAt(0) >= '2' && rank.charAt(0) <= '9': "invalid rank digit "+rank;
+        return rank;
     }
 
     /**

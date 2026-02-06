@@ -196,6 +196,7 @@ public class Parser {
     // === Test Main ===
     public static void main(String[] args) {
         String[] samples = {
+                "T0 {5}: You 3+10 | Dealer 4+10+7 >> LOSE{5}",
                 "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}",
                 "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> WIN{10}",
                 "T3 {5}: Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}",

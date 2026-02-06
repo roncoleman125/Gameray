@@ -9,7 +9,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package gr.parser;
+package ray.parser;
 
 import java.util.*;
 import java.util.regex.*;
@@ -29,7 +29,7 @@ public class GameParser {
          * @param player Player
          * @return Hand
          */
-        public Hand whodat(String player) {
+        public Hand whodat(Player player) {
             for(Hand hand: hands) {
                 if(hand.who.equals(player))
                     return hand;
@@ -42,7 +42,7 @@ public class GameParser {
          * @return Hand
          */
         public Hand you() {
-            return whodat("YOU");
+            return whodat(Player.You);
         }
 
         /**
@@ -50,7 +50,7 @@ public class GameParser {
          * @return Hand
          */
         public Hand dealer() {
-            return whodat("DEALER");
+            return whodat(Player.Dealer);
         }
 
         @Override
@@ -63,52 +63,6 @@ public class GameParser {
             return String.format(
                     "Game[label=%s, bets=%s, hands=%soutcomes=%s]",
                     label, bets, handsBuffer, outcomes);
-        }
-    }
-
-    public static class Hand {
-        String who;
-        List<String> cards = new ArrayList<>();
-        Directive directive; // optional directive: P, D, H
-
-        @Override
-        public String toString() {
-            if (directive != null)
-                return who + cards + " " + directive;
-            return who + cards;
-        }
-    }
-
-    static class Directive {
-        char type; // P, D, H
-        List<List<String>> splitHands = new ArrayList<>(); // used for P!
-        List<String> extraCards = new ArrayList<>();       // used for D! or H!
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(type).append("!");
-            if (type == 'P') {
-                sb.append("{");
-                for (int i = 0; i < splitHands.size(); i++) {
-                    if (i > 0) sb.append(",");
-                    sb.append(String.join("+", splitHands.get(i)));
-                }
-                sb.append("}");
-            } else if (!extraCards.isEmpty()) {
-                sb.append(String.join("+", extraCards));
-            }
-            return sb.toString();
-        }
-    }
-
-    static class Outcome {
-        String result;
-        int amount;
-
-        @Override
-        public String toString() {
-            return result + "{" + amount + "}";
         }
     }
 
@@ -183,13 +137,13 @@ public class GameParser {
      */
     Hand parseHand(String text) {
         // Expanded to include HUEY and DEWEY as valid players
-        Pattern p = Pattern.compile("(YOU|DEALER|HUEY|DEWEY)\\s+([A-Z0-9+!{}\\,]+)");
+        Pattern p = Pattern.compile("(You|Dealer|Huey|Dewey)\\s+([A-Z0-9+!{}\\,]+)");
         Matcher m = p.matcher(text);
         if (!m.find())
             throw new IllegalArgumentException("Invalid hand format: " + text);
 
         Hand hand = new Hand();
-        hand.who = m.group(1);
+        hand.who = Player.valueOf(m.group(1));
         String cardsPart = m.group(2).trim();
 
         // Check for directive (P!, D!, or H!)
@@ -290,10 +244,10 @@ public class GameParser {
     // === Test Main ===
     public static void main(String[] args) {
         String[] samples = {
-                "T1 {5}: YOU 7+7+P!{2+4,5+9} | DEALER 10+6 >> WIN{5}, PUSH{5}",
-                "T2 {5}: HUEY 10+2+D!7 | DEALER 9+8 >> WIN{10}",
-                "T3 {5}: DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}",
-                "T4 {5,15}: YOU 3+3 | DEWEY 9+2+H!5 | DEALER 10+7 >> WIN{5}, WIN{15}"
+                "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}",
+                "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> WIN{10}",
+                "T3 {5}: Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}",
+                "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}, WIN{15}"
         };
 
         GameParser parser = new GameParser();

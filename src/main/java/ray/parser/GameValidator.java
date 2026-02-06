@@ -10,7 +10,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package gr.parser;
+package ray.parser;
 
 import java.util.*;
 
@@ -61,7 +61,7 @@ public class GameValidator {
         validateSplits(game, errors);
 
         // --- Rule 3: Only YOU, HUEY, DEWEY can hit or double ---
-        for(GameParser.Hand hand: game.hands) {
+        for(Hand hand: game.hands) {
             validateDirectiveAccess(hand, errors);
         }
 //        validateDirectiveAccess(game.playerHand, errors);
@@ -77,23 +77,23 @@ public class GameValidator {
     }
 
     /** Checks if YOU hand has a split. */
-    private static boolean hasYouSplit(GameParser.Hand hand) {
+    private static boolean hasYouSplit(Hand hand) {
         return hand != null && "YOU".equals(hand.who)
                 && hand.directive != null && hand.directive.type == 'P';
     }
 
     /** Checks if a hand has a split directive. */
-    private static boolean hasSplit(GameParser.Hand hand) {
+    private static boolean hasSplit(Hand hand) {
         return hand != null && hand.directive != null && hand.directive.type == 'P';
     }
 
     /** Validates who can use H! or D!, and also calls split validation. */
-    private static void validateDirectiveAccess(GameParser.Hand hand, List<String> errors) {
+    private static void validateDirectiveAccess(Hand hand, List<String> errors) {
         if (hand == null || hand.directive == null)
             return;
 
         char type = hand.directive.type;
-        String who = hand.who;
+        Player who = hand.who;
 
         // Only YOU, HUEY, and DEWEY can hit or double
         if ((type == 'H' || type == 'D')
@@ -111,12 +111,12 @@ public class GameValidator {
 
     /** Validates split details: exactly two subhands, each with ≥2 cards. */
     private static void validateSplits(GameParser.Game game, List<String> errors) {
-        GameParser.Hand[] hands = {game.you(), game.dealer()};
-        for (GameParser.Hand h : hands) {
+        Hand[] hands = {game.you(), game.dealer()};
+        for (Hand h : hands) {
             if (h == null || h.directive == null || h.directive.type != 'P')
                 continue;
 
-            GameParser.Directive dir = h.directive;
+            Directive dir = h.directive;
 
             // Rule 2 already checked who may split; now check the structure.
             if (dir.splitHands.size() != 2) {
@@ -138,16 +138,16 @@ public class GameValidator {
 
     /** Ensures that both YOU and DEALER are present. */
     private static void validatePlayersPresent(GameParser.Game game, List<String> errors) {
-        Set<String> players = new HashSet<>();
+        Set<Player> players = new HashSet<>();
         if (game.you() != null)
             players.add(game.you().who);
         if (game.dealer() != null)
             players.add(game.dealer().who);
 
-        if (!players.contains("YOU"))
+        if (!players.contains(Player.You))
             errors.add("Rule 4 violation: Missing YOU player.");
 
-        if (!players.contains("DEALER"))
+        if (!players.contains(Player.Dealer))
             errors.add("Rule 4 violation: Missing DEALER player.");
 
         if (players.size() < 2)
@@ -156,14 +156,14 @@ public class GameValidator {
 
     /** Ensures each player (including DEALER) is given only once. */
     private static void validateUniquePlayers(GameParser.Game game, List<String> errors) {
-        List<String> participants = new ArrayList<>();
+        List<Player> participants = new ArrayList<>();
         if (game.you() != null)
             participants.add(game.you().who);
         if (game.dealer() != null)
             participants.add(game.dealer().who);
 
-        Set<String> seen = new HashSet<>();
-        for (String who : participants) {
+        Set<Player> seen = new HashSet<>();
+        for (Player who : participants) {
             if (!seen.add(who))
                 errors.add(String.format("Rule 5 violation: Player %s is duplicated.", who));
         }

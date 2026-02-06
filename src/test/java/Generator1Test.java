@@ -13,7 +13,7 @@
 import junit.framework.TestCase;
 import ray.model.Game;
 import ray.parser.Parser;
-import ray.generator.ShoeCompiler;
+import ray.generator.ShoeBuilder;
 
 /**
  * This class...
@@ -29,7 +29,7 @@ public class Generator1Test extends TestCase {
 
         Game game = parser.parse(ray);
 
-        ShoeCompiler shoe = new ShoeCompiler();
+        ShoeBuilder shoe = new ShoeBuilder();
 
         System.setProperty("ray.seed","0");
 

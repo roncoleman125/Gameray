@@ -10,7 +10,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ray.parser;
+package ray.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,8 +11,9 @@
  */
 
 import junit.framework.TestCase;
-import ray.parser.GameParser;
-import ray.shoe.Generator;
+import ray.model.Game;
+import ray.parser.Parser;
+import ray.generator.ShoeCompiler;
 
 /**
  * This class...
@@ -24,15 +25,14 @@ public class Generator1Test extends TestCase {
 
         String ray = "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
-        GameParser parser = new GameParser();
+        Parser parser = new Parser();
 
-        GameParser.Game game = parser.parse(ray);
+        Game game = parser.parse(ray);
 
-        Generator generator = new Generator();
-
+        ShoeCompiler shoe = new ShoeCompiler();
 
         System.setProperty("ray.seed","0");
 
-        generator.generate(game);
+        shoe.generate(game);
     }
 }

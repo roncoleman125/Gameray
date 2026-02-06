@@ -10,20 +10,27 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ray.parser;
+package ray.model;
+
+import ray.type.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class...
  *
  * @author ronnc
  */
-
-public class Outcome {
-    String result;
-    int amount;
+public class Hand {
+    public Player who;
+    public List<String> cards = new ArrayList<>();
+    public Directive directive; // optional directive: P, D, H
 
     @Override
     public String toString() {
-        return result + "{" + amount + "}";
+        if (directive != null)
+            return who + " " + cards + " " + directive;
+        return who + " " + cards;
     }
 }

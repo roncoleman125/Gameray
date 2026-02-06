@@ -11,61 +11,13 @@
  */
 package ray.parser;
 
+import ray.model.*;
+import ray.type.Player;
+
 import java.util.*;
 import java.util.regex.*;
 
-public class GameParser {
-    // === Data Models ===
-    public static class Game {
-        String label;
-        List<Integer> bets = new ArrayList<>();      // supports one or two bets
-//        Hand playerHand;
-//        Hand dealerHand;
-        final List<Hand> hands = new ArrayList<>();
-        List<Outcome> outcomes = new ArrayList<>();  // supports one or two outcomes
-
-        /**
-         * Gets a player hand.
-         * @param player Player
-         * @return Hand
-         */
-        public Hand whodat(Player player) {
-            for(Hand hand: hands) {
-                if(hand.who.equals(player))
-                    return hand;
-            }
-            return null;
-        }
-
-        /**
-         * Gets YOU hand.
-         * @return Hand
-         */
-        public Hand you() {
-            return whodat(Player.You);
-        }
-
-        /**
-         * Gets DEALER hand
-         * @return Hand
-         */
-        public Hand dealer() {
-            return whodat(Player.Dealer);
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder handsBuffer = new StringBuilder();
-            for(Hand hand: hands) {
-                handsBuffer.append(hand).append(", ");
-            }
-
-            return String.format(
-                    "Game[label=%s, bets=%s, hands=%soutcomes=%s]",
-                    label, bets, handsBuffer, outcomes);
-        }
-    }
-
+public class Parser {
     // === Parsing Methods ===
 
     public Game parse(String line) {
@@ -250,7 +202,7 @@ public class GameParser {
                 "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}, WIN{15}"
         };
 
-        GameParser parser = new GameParser();
+        Parser parser = new Parser();
 
         for (String line : samples) {
             Game g = parser.parse(line);

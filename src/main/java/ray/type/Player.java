@@ -1,4 +1,4 @@
-package ray.parser;
+package ray.type;
 
 /*
  * Copyright (c) 2026 Hexant, LLC

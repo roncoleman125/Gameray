@@ -12,9 +12,12 @@
 
 package ray.parser;
 
+import ray.model.Directive;
+import ray.model.Game;
+import ray.model.Hand;
+import ray.type.Player;
 import java.util.*;
-
-public class GameValidator {
+public class Validator {
 
     /**
      * Validates a parsed Game according to the rules:
@@ -30,7 +33,7 @@ public class GameValidator {
      * @param game Parsed Game object from GameParser
      * @return list of validation error messages; empty if all rules pass
      */
-    public static List<String> validate(GameParser.Game game) {
+    public static List<String> validate(Game game) {
         List<String> errors = new ArrayList<>();
 
         if (game == null) {
@@ -110,7 +113,7 @@ public class GameValidator {
     }
 
     /** Validates split details: exactly two subhands, each with ≥2 cards. */
-    private static void validateSplits(GameParser.Game game, List<String> errors) {
+    private static void validateSplits(Game game, List<String> errors) {
         Hand[] hands = {game.you(), game.dealer()};
         for (Hand h : hands) {
             if (h == null || h.directive == null || h.directive.type != 'P')
@@ -137,7 +140,7 @@ public class GameValidator {
     }
 
     /** Ensures that both YOU and DEALER are present. */
-    private static void validatePlayersPresent(GameParser.Game game, List<String> errors) {
+    private static void validatePlayersPresent(Game game, List<String> errors) {
         Set<Player> players = new HashSet<>();
         if (game.you() != null)
             players.add(game.you().who);
@@ -155,7 +158,7 @@ public class GameValidator {
     }
 
     /** Ensures each player (including DEALER) is given only once. */
-    private static void validateUniquePlayers(GameParser.Game game, List<String> errors) {
+    private static void validateUniquePlayers(Game game, List<String> errors) {
         List<Player> participants = new ArrayList<>();
         if (game.you() != null)
             participants.add(game.you().who);
@@ -172,32 +175,32 @@ public class GameValidator {
     // === Example Usage ===
     public static void main(String[] args) {
         // Valid example
-        GameParser.Game g1 = new GameParser().parse("T1 {5,10}: YOU 7+7+P!{2+4,5+9} | DEALER 10+6 >> WIN{5}, PUSH{5}, LOSE{10}");
+        Game g1 = new Parser().parse("T1 {5,10}: YOU 7+7+P!{2+4,5+9} | DEALER 10+6 >> WIN{5}, PUSH{5}, LOSE{10}");
         System.out.println("Validating g1...");
         printValidation(g1);
 
         // Invalid: dealer splits
-        GameParser.Game g2 = new GameParser().parse("T2 {5}: DEALER 10+10+P!{3+8,9+2} | YOU 9+8 >> WIN{5}");
+        Game g2 = new Parser().parse("T2 {5}: DEALER 10+10+P!{3+8,9+2} | YOU 9+8 >> WIN{5}");
         System.out.println("\nValidating g2...");
         printValidation(g2);
 
         // Invalid: dealer hits
-        GameParser.Game g3 = new GameParser().parse("T3 {5}: DEALER 9+8+H!5 | YOU 10+6 >> WIN{5}");
+        Game g3 = new Parser().parse("T3 {5}: DEALER 9+8+H!5 | YOU 10+6 >> WIN{5}");
         System.out.println("\nValidating g3...");
         printValidation(g3);
 
         // Invalid: split with wrong structure
-        GameParser.Game g4 = new GameParser().parse("T4 {5}: YOU 8+8+P!{2+4+9} | DEALER 10+7 >> WIN{5}, PUSH{5}");
+        Game g4 = new Parser().parse("T4 {5}: YOU 8+8+P!{2+4+9} | DEALER 10+7 >> WIN{5}, PUSH{5}");
         System.out.println("\nValidating g4...");
         printValidation(g4);
 
         // Invalid: missing YOU
-        GameParser.Game g5 = new GameParser().parse("T5 {5}: HUEY 10+2+D!10 | DEALER 9+8 >> LOSE{5}");
+        Game g5 = new Parser().parse("T5 {5}: HUEY 10+2+D!10 | DEALER 9+8 >> LOSE{5}");
         System.out.println("\nValidating g5...");
         printValidation(g5);
     }
 
-    private static void printValidation(GameParser.Game game) {
+    private static void printValidation(Game game) {
         List<String> errors = validate(game);
         if (errors.isEmpty())
             System.out.println("✓ Game is valid: " + game);

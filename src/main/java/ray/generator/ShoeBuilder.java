@@ -129,7 +129,7 @@ public class ShoeBuilder {
             comment(player+"");
             if(hand.directive != null) {
                 switch(hand.directive.type) {
-                    case 'P' -> {;
+                    case 'P' -> {
                         comment("Splitting");
                         int handno = 1;
                         for(List<String> splitHand: hand.directive.splitHands) {
@@ -147,7 +147,7 @@ public class ShoeBuilder {
                         }
                     }
 
-                };
+                }
             }
             // Any extra cards written here.
             else if(hand.cards.size() >= 2) {
@@ -230,12 +230,6 @@ public class ShoeBuilder {
      * @return Indentation
      */
     String indent(int level) {
-        StringBuilder buffer = new StringBuilder();
-
-        for(int i=0; i < level; i++) {
-            buffer.append(INDENT);
-        }
-
-        return buffer.toString();
+        return INDENT.repeat(level);
     }
 }

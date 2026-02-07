@@ -16,12 +16,13 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class exercises two implied hits on one player and one on another.
+ * This class exercises the split directive with three cards.
  * @author Ron.Coleman
  */
-public class SpaceTest extends TestCase {
+public class Split2Test extends TestCase {
     public void test() {
-        String ray = "T10 {5}: You 3 + 2 + J + 2 | Dealer 7+10+4 >> Lose{5}";
+
+        String ray = "T7 {5}: You 7+7+P!{2+4,5+4+3} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
 

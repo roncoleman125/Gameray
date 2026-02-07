@@ -16,7 +16,7 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class exercises two implied hits on one player and one on another.
+ * This class exercises the double-down directive.
  * @author Ron.Coleman
  */
 public class Double1Test extends TestCase {

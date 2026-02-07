@@ -80,7 +80,7 @@ public class ShoeBuilder {
         if(pkgName != null)
             write("package "+pkgName);
 
-        write("import charlie.card.Card");
+        write("import charlie.card.Card;");
         write("import charlie.shoe."+clazzBase+";");
         write("public class "+clazzName+" extends "+ clazzBase +" { ");
         write(indent(1)+"@Override");
@@ -92,6 +92,7 @@ public class ShoeBuilder {
      * Writes code generation epilog
      */
     void epilog() {
+        write(indent(1)+"}");
         write("}");
         comment(0,"END generated code");
     }
@@ -193,7 +194,7 @@ public class ShoeBuilder {
 
         Suit suit = suits[suitno];
 
-        return indent(2)+"cards.add(new Card("+getRank(rank)+", "+suit+"));";
+        return indent(2)+"cards.add(new Card("+getRank(rank)+", Card.Suit."+suit+"));";
     }
 
     String getRank(String rank) {

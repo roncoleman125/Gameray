@@ -11,18 +11,17 @@
  */
 
 import junit.framework.TestCase;
+import ray.generator.ShoeBuilder;
 import ray.model.Game;
 import ray.parser.Parser;
-import ray.generator.ShoeBuilder;
 
 /**
- * This class exercises the split directive.
+ * This class exercises spaces around hits.
  * @author Ron.Coleman
  */
-public class Split1Test extends TestCase {
+public class Space2Test extends TestCase {
     public void test() {
-
-        String ray = "T7 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "T12 {5}: You 7+7+P!{2+ 4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
 

@@ -90,6 +90,9 @@ public class Parser {
     Hand parseHand(String text) {
         // Expanded to include HUEY and DEWEY as valid players
         Pattern p = Pattern.compile("(You|Dealer|Huey|Dewey)\\s+([A-Z0-9+!{}\\,]+)");
+
+        // Remove spaces around hit for pattern matching: 3 + 2 => 3+2
+        text = text.replaceAll("\s*\\+\s*","+");
         Matcher m = p.matcher(text);
         if (!m.find())
             throw new IllegalArgumentException("Invalid hand format: " + text);

@@ -23,7 +23,7 @@ import ray.parser.Parser;
 public class Basic2Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: You 3+K | Dealer 4+10+7 >> Lose{5}";
+        String ray = "T1 {5}: You 3+K | Dealer 4+10+7 >> Lose{5}";
 
         Parser parser = new Parser();
 

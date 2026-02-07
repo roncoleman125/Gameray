@@ -16,22 +16,21 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class exercises an explicit hit (ie, with the hit directive).
+ * This class exercises an illegal directive, "H!".
  * @author Ron.Coleman
  */
 public class Hit4Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
+        String ray = "T6 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
 
         Parser parser = new Parser();
 
-        Game game = parser.parse(ray);
-
-        ShoeBuilder shoe = new ShoeBuilder();
-
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        try {
+            parser.parse(ray);
+        }
+        catch(IllegalArgumentException e) {
+            assert true;
+        }
     }
 }

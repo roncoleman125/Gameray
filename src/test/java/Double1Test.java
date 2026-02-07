@@ -19,10 +19,9 @@ import ray.parser.Parser;
  * This class exercises two implied hits on one player and one on another.
  * @author Ron.Coleman
  */
-public class Hit3Test extends TestCase {
+public class Double1Test extends TestCase {
     public void test() {
-
-        String ray = "T5 {5}: You 3+2+J+2 | Dealer 7+10+4 >> Lose{5}";
+        String ray = "T2 {5}: You 3+2+D!J | Dealer 7+10+4 >> Lose{5}";
 
         Parser parser = new Parser();
 

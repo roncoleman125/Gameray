@@ -23,7 +23,7 @@ import ray.generator.ShoeBuilder;
 public class Split1Test extends TestCase {
     public void test() {
 
-        String ray = "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "T7 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
 

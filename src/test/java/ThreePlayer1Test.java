@@ -23,7 +23,7 @@ import ray.parser.Parser;
 public class ThreePlayer1Test extends TestCase {
     public void test() {
 
-        String ray = "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> Win{5}, Win{15}";
+        String ray = "T8 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
 
         Parser parser = new Parser();
 

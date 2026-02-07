@@ -107,7 +107,7 @@ public class Parser {
                     hand.cards.add(c);
             }
 
-            // Pass starting at directive letter, e.g., "P!{2+4,5+9}"
+            // Pass starting at directive letter, e.g., "P!{2+4,5+9}" or "D!10"
             hand.directive = parseDirective(cardsPart.substring(exclIdx - 1));
         } else {
             for (String c : cardsPart.split("\\+"))
@@ -121,10 +121,10 @@ public class Parser {
      * Parses directive parts such as:
      *   P!{2+4,5+9}
      *   D!10
-     *   H!5
      */
     Directive parseDirective(String directivePart) {
         Directive dir = new Directive();
+
         directivePart = directivePart.trim();
 
         if (directivePart.length() < 2 || directivePart.charAt(1) != '!')
@@ -149,15 +149,15 @@ public class Parser {
             } else {
                 throw new IllegalArgumentException("Invalid split directive: " + directivePart);
             }
-        } else if (type == 'D' || type == 'H') {
-            // Parse D!10 or H!5
-            Pattern p = Pattern.compile("[DH]!([A-Z0-9+]+)");
+        } else if (type == 'D') {
+            // Parse D!10
+            Pattern p = Pattern.compile("D!([A-Z0-9+]+)");
             Matcher m = p.matcher(directivePart);
             if (m.find()) {
                 for (String c : m.group(1).split("\\+"))
                     if (!c.isEmpty()) dir.extraCards.add(c);
             } else {
-                throw new IllegalArgumentException("Invalid double/hit directive: " + directivePart);
+                throw new IllegalArgumentException("Invalid double-down directive: " + directivePart);
             }
         } else {
             throw new IllegalArgumentException("Unknown directive type: " + type);
@@ -199,8 +199,8 @@ public class Parser {
                 "T0 {5}: You 3+10 | Dealer 4+10+7 >> Lose{5}",
                 "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> Win{5}, Push{5}",
                 "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> Win{10}",
-                "T3 {5}: Dewey 9+2+H!5 | Dealer 10+7 >> Win{5}",
-                "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> Win{5}, Win{15}"
+                "T3 {5}: Dewey 9+2+5 | Dealer 10+7 >> Win{5}",
+                "T4 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}"
         };
 
         Parser parser = new Parser();

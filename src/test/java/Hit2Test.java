@@ -16,14 +16,13 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class...
- *
- * @author ronnc
+ * This class exercises implied hits on two players.
+ * @author Ron.Coleman
  */
-public class Generator2Test extends TestCase {
+public class Hit2Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: You 3+K | Dealer 4+10+7 >> LOSE{5}";
+        String ray = "T0 {5}: You 3+2+J | Dealer 4+10+7 >> Lose{5}";
 
         Parser parser = new Parser();
 

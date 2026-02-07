@@ -182,7 +182,7 @@ public class Parser {
     }
 
     Outcome parseOutcome(String text) {
-        Pattern p = Pattern.compile("(WIN|LOSE|PUSH|BUST|BJ|BLACKJACK|CHARLIE)\\s*\\{(\\d+)\\}",
+        Pattern p = Pattern.compile("(Win|Lose|Push|Bust|Blackjack|Charlie)\\s*\\{(\\d+)\\}",
                 Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(text);
         if (!m.find())
@@ -196,11 +196,11 @@ public class Parser {
     // === Test Main ===
     public static void main(String[] args) {
         String[] samples = {
-                "T0 {5}: You 3+10 | Dealer 4+10+7 >> LOSE{5}",
-                "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}",
-                "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> WIN{10}",
-                "T3 {5}: Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}",
-                "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> WIN{5}, WIN{15}"
+                "T0 {5}: You 3+10 | Dealer 4+10+7 >> Lose{5}",
+                "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> Win{5}, Push{5}",
+                "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> Win{10}",
+                "T3 {5}: Dewey 9+2+H!5 | Dealer 10+7 >> Win{5}",
+                "T4 {5,15}: You 3+3 | Dewey 9+2+H!5 | Dealer 10+7 >> Win{5}, Win{15}"
         };
 
         Parser parser = new Parser();

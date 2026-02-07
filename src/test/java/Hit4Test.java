@@ -11,19 +11,18 @@
  */
 
 import junit.framework.TestCase;
+import ray.generator.ShoeBuilder;
 import ray.model.Game;
 import ray.parser.Parser;
-import ray.generator.ShoeBuilder;
 
 /**
- * This class...
- *
- * @author ronnc
+ * This class exercises an explicit hit (ie, with the hit directive).
+ * @author Ron.Coleman
  */
-public class GeneratorSplit1Test extends TestCase {
+public class Hit4Test extends TestCase {
     public void test() {
 
-        String ray = "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "T0 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
 
         Parser parser = new Parser();
 

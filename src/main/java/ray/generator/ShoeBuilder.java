@@ -123,7 +123,7 @@ public class ShoeBuilder {
             Hand hand = game.whodat(player);
 
             // If there is no hand, further directives, or extra cards, adios.
-            if(hand == null || hand.directive == null)
+            if(hand == null || (hand.directive == null && hand.cards.size() == 2))
                 continue;
 
             comment(player+"");
@@ -146,11 +146,11 @@ public class ShoeBuilder {
                             write(addCard(extra));
                         }
                     }
-
                 }
             }
             // Any extra cards written here.
             else if(hand.cards.size() >= 2) {
+                comment("Hitting");
                 for(int cardno = cardIndices.get(player); cardno < hand.cards.size(); cardno++) {
                     String rank = hand.cards.get(cardno);
                     write(addCard(rank));

@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class tests only one player, You.
+ * This class tests ray syntax error.
  * @author Ron.Coleman
  */
-public class NoPlayerTest extends TestCase {
+public class NoPlayerSyntaxTest extends TestCase {
     public void test() {
 
         String ray = "T0 {5}: >> Lose{5}";

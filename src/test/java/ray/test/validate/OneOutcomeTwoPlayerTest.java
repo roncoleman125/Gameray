@@ -18,12 +18,12 @@ import ray.parser.Validator;
 import java.util.List;
 
 /**
- * This class tests a missing bet.
+ * This class tests a missing outcome.
  * @author Ron.Coleman
  */
-public class OneBetTwoPlayerTest extends TestCase {
+public class OneOutcomeTwoPlayerTest extends TestCase {
     public void test() {
-        String ray = "T4 {5}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
+        String ray = "T4 {5,15}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}";
 
         Parser parser = new Parser();
 

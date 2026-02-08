@@ -47,8 +47,8 @@ public class Parser {
 
         // Step 2: split player and dealer
         String[] hands = body.split("\\|");
-        if (hands.length < 2)
-            throw new IllegalArgumentException("Expected player and dealer hands separated by '|'");
+//        if (hands.length < 2)
+//            throw new IllegalArgumentException("Expected player and dealer hands separated by '|'");
 
         for(int handno=0; handno <hands.length; handno++) {
             Hand hand = parseHand(hands[handno].trim());

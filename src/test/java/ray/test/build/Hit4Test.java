@@ -1,0 +1,34 @@
+package ray.test.build;/*
+ * Copyright (c) 2026 Hexant, LLC
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+import junit.framework.TestCase;
+import ray.parser.Parser;
+
+/**
+ * This class exercises an illegal directive, "H!".
+ * @author Ron.Coleman
+ */
+public class Hit4Test extends TestCase {
+    public void test() {
+
+        String ray = "T6 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
+
+        Parser parser = new Parser();
+
+        try {
+            parser.parse(ray);
+        }
+        catch(IllegalArgumentException e) {
+            assert true;
+        }
+    }
+}

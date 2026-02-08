@@ -1,4 +1,4 @@
-/*
+package ray.test.build;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -16,21 +16,22 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class exercises an illegal directive, "H!".
+ * This class exercises the split directive with three cards.
  * @author Ron.Coleman
  */
-public class Hit4Test extends TestCase {
+public class Split2Test extends TestCase {
     public void test() {
 
-        String ray = "T6 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
+        String ray = "T7 {5}: You 7+7+P!{2+4,5+4+3} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
 
-        try {
-            parser.parse(ray);
-        }
-        catch(IllegalArgumentException e) {
-            assert true;
-        }
+        Game game = parser.parse(ray);
+
+        ShoeBuilder shoe = new ShoeBuilder();
+
+        System.setProperty("ray.seed","0");
+
+        shoe.generate(game);
     }
 }

@@ -52,6 +52,10 @@ public class Game {
         return whodat(Player.You);
     }
 
+    public Hand huey() { return whodat(Player.Huey); }
+
+    public Hand dewey() { return whodat(Player.Dewey); }
+
     /**
      * Gets DEALER hand
      * @return Hand

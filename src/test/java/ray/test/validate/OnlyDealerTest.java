@@ -1,4 +1,4 @@
-/*
+package ray.test.validate;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -11,26 +11,36 @@
  */
 
 import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
 import ray.model.Game;
 import ray.parser.Parser;
+import ray.parser.Validator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This class exercises spaces around hits.
+ * This class tests only one player, You.
  * @author Ron.Coleman
  */
-public class Space1Test extends TestCase {
+public class OnlyDealerTest extends TestCase {
     public void test() {
-        String ray = "T10 {5}: You 3 + 2 + J + 2 | Dealer 7+10+4 >> Lose{5}";
+
+        String ray = "T0 {5}: Dealer 3+10 >> Lose{5}";
+
+        List<String> errors = new ArrayList<>();
 
         Parser parser = new Parser();
+        try {
+            Game game = parser.parse(ray);
 
-        Game game = parser.parse(ray);
+            errors = Validator.validate(game);
+            assert errors.size() == 1;
+        }
+        catch(Exception _) {
+            assert false;
+        }
 
-        ShoeBuilder shoe = new ShoeBuilder();
-
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        for(String error: errors)
+            System.out.println("error: "+error);
     }
 }

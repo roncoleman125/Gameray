@@ -1,4 +1,4 @@
-/*
+package ray.test.build;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -16,13 +16,12 @@ import ray.model.Game;
 import ray.parser.Parser;
 
 /**
- * This class exercises an implied hit (ie, without the hit directive).
+ * This class exercises the double-down directive.
  * @author Ron.Coleman
  */
-public class Hit1Test extends TestCase {
+public class Double1Test extends TestCase {
     public void test() {
-
-        String ray = "T3 {5}: You 3+4+J | Dealer 10+8 >> Lose{5}";
+        String ray = "T2 {5}: You 3+2+D!J | Dealer 7+10+4 >> Lose{5}";
 
         Parser parser = new Parser();
 

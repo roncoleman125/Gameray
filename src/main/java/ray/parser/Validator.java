@@ -17,6 +17,9 @@ import ray.model.Game;
 import ray.model.Hand;
 import ray.type.Player;
 import java.util.*;
+
+import static ray.type.Player.*;
+
 public class Validator {
 
     /**
@@ -49,14 +52,12 @@ public class Validator {
         if (youSplit) {
             if (outcomes != bets + 1) {
                 errors.add(String.format(
-                        "Rule 1 violation: YOU split, expected outcomes=%d but found %d.",
-                        bets + 1, outcomes));
+                        "YOU split, expected outcomes=%d but found %d.",bets + 1, outcomes));
             }
         } else {
             if (outcomes != bets) {
                 errors.add(String.format(
-                        "Rule 1 violation: Expected outcomes=%d but found %d.",
-                        bets, outcomes));
+                        "expected outcomes=%d but found %d.",bets, outcomes));
             }
         }
 
@@ -141,20 +142,19 @@ public class Validator {
 
     /** Ensures that both YOU and DEALER are present. */
     private static void validatePlayersPresent(Game game, List<String> errors) {
-        Set<Player> players = new HashSet<>();
-        if (game.you() != null)
-            players.add(game.you().who);
-        if (game.dealer() != null)
-            players.add(game.dealer().who);
+        Player[] seats = { Huey, You, Dewey, Dealer };
 
-        if (!players.contains(Player.You))
-            errors.add("Rule 4 violation: Missing YOU player.");
+        Set<Player> players = new HashSet<>();
+        for(Player player: seats) {
+            if(game.whodat(player) != null)
+                players.add(player);
+        }
+
+        if (!players.contains(You))
+            errors.add("Missing YOU player.");
 
         if (!players.contains(Player.Dealer))
-            errors.add("Rule 4 violation: Missing DEALER player.");
-
-        if (players.size() < 2)
-            errors.add("Rule 4 violation: Each game must have at least YOU and DEALER.");
+            errors.add("Missing DEALER player.");
     }
 
     /** Ensures each player (including DEALER) is given only once. */

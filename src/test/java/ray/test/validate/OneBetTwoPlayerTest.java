@@ -1,4 +1,4 @@
-/*
+package ray.test.validate;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -11,28 +11,30 @@
  */
 
 import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
 import ray.model.Game;
 import ray.parser.Parser;
+import ray.parser.Validator;
+
+import java.util.List;
 
 /**
  * This class...
  *
  * @author ronnc
  */
-public class Basic2Test extends TestCase {
+public class OneBetTwoPlayerTest extends TestCase {
     public void test() {
-
-        String ray = "T1 {5}: You 3+K | Dealer 4+10+7 >> Lose{5}";
+        String ray = "T4 {5}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
 
         Parser parser = new Parser();
 
         Game game = parser.parse(ray);
+        
+        List<String> errors = Validator.validate(game);
 
-        ShoeBuilder shoe = new ShoeBuilder();
+        for(String error: errors)
+            System.out.println("error: "+error);
 
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        assert !errors.isEmpty();
     }
 }

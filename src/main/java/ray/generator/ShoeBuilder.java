@@ -59,7 +59,7 @@ public class ShoeBuilder {
     Suit[] suits = {HEARTS, SPADES, DIAMONDS, CLUBS };
 
     /**
-     * Generates code for a shoe.
+     * Generates code for a single-game shoe.
      * @param game Compiled game
      */
     public void generate(Game game) {
@@ -68,6 +68,21 @@ public class ShoeBuilder {
         start(game);
 
         play(game);
+
+        epilog();
+    }
+
+    /**
+     * Generates code for a multi-game shoe.
+     * @param games Compiled games
+     */
+    public void generate(List<Game> games) {
+        prolog();
+
+        for(Game game: games) {
+            start(game);
+            play(game);
+        }
 
         epilog();
     }

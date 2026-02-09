@@ -10,37 +10,14 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import ray.model.Game;
-import ray.parser.Parser;
-import ray.parser.Validator;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class tests only one player, You.
  * @author Ron.Coleman
  */
-public class OnlyDealerTest extends TestCase {
+public class OnlyDealerTest extends AbstractInvalidTest {
     public void test() {
-
         String ray = "T0 {5}: Dealer 3+10 >> Lose{5}";
 
-        List<String> errors = new ArrayList<>();
-
-        Parser parser = new Parser();
-        try {
-            Game game = parser.parse(ray);
-
-            errors = Validator.validate(game);
-            assert errors.size() == 1;
-        }
-        catch(Exception _) {
-            assert false;
-        }
-
-        for(String error: errors)
-            System.out.println("error: "+error);
+        super.test(ray);
     }
 }

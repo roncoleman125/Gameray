@@ -1,4 +1,4 @@
-package ray.test.build;/*
+/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,29 +10,38 @@ package ray.test.build;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package ray.test.validate;
+
 import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
+import ray.compiler.Parser;
+import ray.compiler.Validator;
 import ray.model.Game;
-import ray.parser.Parser;
+
+import java.util.List;
 
 /**
- * This class...
+ * This class is the base for all tests.
  *
  * @author ronnc
  */
-public class ThreePlayer1Test extends TestCase {
-    public void test() {
-
-        String ray = "T8 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
-
+abstract public class AbstractRayTest extends TestCase {
+    protected void test(String ray) {
         Parser parser = new Parser();
 
-        Game game = parser.parse(ray);
+        List<String> errors =  null;
 
-        ShoeBuilder shoe = new ShoeBuilder();
+        try {
+            Game game = parser.parse(ray);
 
-        System.setProperty("ray.seed","0");
+            errors = Validator.validate(game);
 
-        shoe.generate(game);
+            for (String error : errors)
+                System.out.println("error: " + error);
+
+            assert errors.isEmpty();
+        }
+        catch(IllegalArgumentException e) {
+            System.out.println("syntax error: "+e.getMessage());
+        }
     }
 }

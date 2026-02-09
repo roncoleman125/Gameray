@@ -1,4 +1,4 @@
-package ray.test.build;/*
+/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,28 +10,16 @@ package ray.test.build;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
-import ray.model.Game;
-import ray.parser.Parser;
+package ray.test.validate;
 
 /**
- * This class exercises implied hits on two players.
+ * This class tests an invalid outcome.
  * @author Ron.Coleman
  */
-public class Hit2Test extends TestCase {
+public class InvalidOutcomeTest extends AbstractInvalidTest {
     public void test() {
+        String ray = "T0 {5}: You 3+10 | Dealer 4+10+7 >> Loser {5}";
 
-        String ray = "T4 {5}: You 3+2+J | Dealer 4+10+7 >> Lose{5}";
-
-        Parser parser = new Parser();
-
-        Game game = parser.parse(ray);
-
-        ShoeBuilder shoe = new ShoeBuilder();
-
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        super.test(ray);
     }
 }

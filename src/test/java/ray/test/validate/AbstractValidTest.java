@@ -1,4 +1,4 @@
-package ray.test.validate;/*
+/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,15 +10,11 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * This class...
- *
- * @author ronnc
- */
-public class YouHueyDealerTest extends AbstractValidTest {
-    public void test() {
-        String ray = "T4 {5,15}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
+package ray.test.validate;
 
-        super.test(ray);
-    }
+/**
+ * This class is the base class for valid tests.
+ * @author Ron.Coleman
+ */
+abstract public class AbstractValidTest extends AbstractRayTest {
 }

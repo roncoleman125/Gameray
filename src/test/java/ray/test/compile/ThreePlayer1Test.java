@@ -1,4 +1,4 @@
-package ray.test.build;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -13,15 +13,17 @@ package ray.test.build;/*
 import junit.framework.TestCase;
 import ray.generator.ShoeBuilder;
 import ray.model.Game;
-import ray.parser.Parser;
+import ray.compiler.Parser;
 
 /**
- * This class exercises the double-down directive.
- * @author Ron.Coleman
+ * This class...
+ *
+ * @author ronnc
  */
-public class Double1Test extends TestCase {
+public class ThreePlayer1Test extends TestCase {
     public void test() {
-        String ray = "T2 {5}: You 3+2+D!J | Dealer 7+10+4 >> Lose{5}";
+
+        String ray = "T8 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
 
         Parser parser = new Parser();
 

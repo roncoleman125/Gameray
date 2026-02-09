@@ -1,4 +1,4 @@
-package ray.test.build;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -13,16 +13,15 @@ package ray.test.build;/*
 import junit.framework.TestCase;
 import ray.generator.ShoeBuilder;
 import ray.model.Game;
-import ray.parser.Parser;
+import ray.compiler.Parser;
 
 /**
- * This class exercises the split directive with three cards.
+ * This class exercises two implied hits on one player and one on another.
  * @author Ron.Coleman
  */
-public class Split2Test extends TestCase {
+public class Hit5Test extends TestCase {
     public void test() {
-
-        String ray = "T7 {5}: You 7+7+P!{2+4,5+4+3} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "T9 {5}: You 3+2+J+2 | Dealer 7+10+4 >> Lose{5}";
 
         Parser parser = new Parser();
 

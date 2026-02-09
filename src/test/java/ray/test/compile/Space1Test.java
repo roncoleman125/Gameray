@@ -1,4 +1,4 @@
-package ray.test.validate;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,15 +10,27 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * This class...
- *
- * @author ronnc
- */
-public class YouHueyDealerTest extends AbstractValidTest {
-    public void test() {
-        String ray = "T4 {5,15}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
+import junit.framework.TestCase;
+import ray.generator.ShoeBuilder;
+import ray.model.Game;
+import ray.compiler.Parser;
 
-        super.test(ray);
+/**
+ * This class exercises spaces around hits.
+ * @author Ron.Coleman
+ */
+public class Space1Test extends TestCase {
+    public void test() {
+        String ray = "T10 {5}: You 3 + 2 + J + 2 | Dealer 7+10+4 >> Lose{5}";
+
+        Parser parser = new Parser();
+
+        Game game = parser.parse(ray);
+
+        ShoeBuilder shoe = new ShoeBuilder();
+
+        System.setProperty("ray.seed","0");
+
+        shoe.generate(game);
     }
 }

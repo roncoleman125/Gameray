@@ -12,8 +12,8 @@ package ray.test.validate;/*
 
 import junit.framework.TestCase;
 import ray.model.Game;
-import ray.parser.Parser;
-import ray.parser.Validator;
+import ray.compiler.Parser;
+import ray.compiler.Validator;
 
 import java.util.List;
 
@@ -21,19 +21,10 @@ import java.util.List;
  * This class tests a missing bet.
  * @author Ron.Coleman
  */
-public class OneBetTwoPlayerTest extends TestCase {
+public class OneBetTwoPlayerTest extends AbstractInvalidTest {
     public void test() {
         String ray = "T4 {5}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
 
-        Parser parser = new Parser();
-
-        Game game = parser.parse(ray);
-        
-        List<String> errors = Validator.validate(game);
-
-        for(String error: errors)
-            System.out.println("error: "+error);
-
-        assert !errors.isEmpty();
+        super.test(ray);
     }
 }

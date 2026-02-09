@@ -10,33 +10,15 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import ray.model.Game;
-import ray.parser.Parser;
-import ray.parser.Validator;
-
-import java.util.List;
-
 /**
  * This class...
  *
  * @author ronnc
  */
-public class YouDealerTest extends TestCase {
+public class YouDealerTest extends AbstractValidTest {
     public void test() {
-
         String ray = "T0 {5}: You 3+10 | Dealer 4+10+7 >> Lose{5}";
 
-        Parser parser = new Parser();
-
-        Game game = parser.parse(ray);
-
-        List<String> errors = Validator.validate(game);
-
-        for(String error: errors)
-            System.out.println("error: "+error);
-        
-        assert errors.isEmpty();
-
+        super.test(ray);
     }
 }

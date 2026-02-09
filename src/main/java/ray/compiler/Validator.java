@@ -10,7 +10,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ray.parser;
+package ray.compiler;
 
 import ray.model.Directive;
 import ray.model.Game;
@@ -40,7 +40,7 @@ public class Validator {
         List<String> errors = new ArrayList<>();
 
         if (game == null) {
-            errors.add("Game is null.");
+            errors.add("game is null.");
             return errors;
         }
 
@@ -52,7 +52,7 @@ public class Validator {
         if (youSplit) {
             if (outcomes != bets + 1) {
                 errors.add(String.format(
-                        "YOU split, expected outcomes=%d but found %d.",bets + 1, outcomes));
+                        "You split, expected outcomes=%d but found %d.",bets + 1, outcomes));
             }
         } else {
             if (outcomes != bets) {
@@ -68,8 +68,6 @@ public class Validator {
         for(Hand hand: game.hands) {
             validateDirectiveAccess(hand, errors);
         }
-//        validateDirectiveAccess(game.playerHand, errors);
-//        validateDirectiveAccess(game.dealerHand, errors);
 
         // --- Rule 4: Must have YOU and DEALER ---
         validatePlayersPresent(game, errors);
@@ -101,15 +99,15 @@ public class Validator {
 
         // Only YOU, HUEY, and DEWEY can hit or double
         if ((type == 'H' || type == 'D')
-                && !(who.equals("YOU") || who.equals("HUEY") || who.equals("DEWEY"))) {
+                && !(who.equals("You") || who.equals("Huey") || who.equals("Dewey"))) {
             errors.add(String.format(
-                    "Rule 3 violation: %s cannot use directive %c!.", who, type));
+                    "%s cannot use directive %c!.", who, type));
         }
 
         // Only YOU can split
-        if (type == 'P' && !who.equals("YOU")) {
+        if (type == 'P' && !who.equals("You")) {
             errors.add(String.format(
-                    "Rule 2 violation: %s cannot split (P!).", who));
+                    "%s cannot split (P!).", who));
         }
     }
 
@@ -125,7 +123,7 @@ public class Validator {
             // Rule 2 already checked who may split; now check the structure.
             if (dir.splitHands.size() != 2) {
                 errors.add(String.format(
-                        "Split error: %s has %d subhands, expected 2.",
+                        "split error: %s has %d subhands, expected 2.",
                         h.who, dir.splitHands.size()));
             }
 
@@ -133,7 +131,7 @@ public class Validator {
                 List<String> sub = dir.splitHands.get(i);
                 if (sub.size() < 2) {
                     errors.add(String.format(
-                            "Split error: %s subhand #%d has only %d card(s), expected at least 2.",
+                            "split error: %s subhand #%d has only %d card(s), expected at least 2.",
                             h.who, i + 1, sub.size()));
                 }
             }
@@ -151,10 +149,10 @@ public class Validator {
         }
 
         if (!players.contains(You))
-            errors.add("Missing YOU player.");
+            errors.add("missing You player.");
 
         if (!players.contains(Player.Dealer))
-            errors.add("Missing DEALER player.");
+            errors.add("missing Dealer player.");
     }
 
     /** Ensures each player (including DEALER) is given only once. */
@@ -168,34 +166,34 @@ public class Validator {
         Set<Player> seen = new HashSet<>();
         for (Player who : participants) {
             if (!seen.add(who))
-                errors.add(String.format("Rule 5 violation: Player %s is duplicated.", who));
+                errors.add(String.format("player %s is duplicated.", who));
         }
     }
 
     // === Example Usage ===
     public static void main(String[] args) {
         // Valid example
-        Game g1 = new Parser().parse("T1 {5,10}: YOU 7+7+P!{2+4,5+9} | DEALER 10+6 >> WIN{5}, PUSH{5}, LOSE{10}");
+        Game g1 = new Parser().parse("T1 {5,10}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}, LOSE{10}");
         System.out.println("Validating g1...");
         printValidation(g1);
 
         // Invalid: dealer splits
-        Game g2 = new Parser().parse("T2 {5}: DEALER 10+10+P!{3+8,9+2} | YOU 9+8 >> WIN{5}");
+        Game g2 = new Parser().parse("T2 {5}: Dealer 10+10+P!{3+8,9+2} | You 9+8 >> Win{5}");
         System.out.println("\nValidating g2...");
         printValidation(g2);
 
         // Invalid: dealer hits
-        Game g3 = new Parser().parse("T3 {5}: DEALER 9+8+H!5 | YOU 10+6 >> WIN{5}");
+        Game g3 = new Parser().parse("T3 {5}: Dealer 9+8+H!5 | You 10+6 >> Win{5}");
         System.out.println("\nValidating g3...");
         printValidation(g3);
 
         // Invalid: split with wrong structure
-        Game g4 = new Parser().parse("T4 {5}: YOU 8+8+P!{2+4+9} | DEALER 10+7 >> WIN{5}, PUSH{5}");
+        Game g4 = new Parser().parse("T4 {5}: You 8+8+P!{2+4+9} | Dealer 10+7 >> Win{5}, Push{5}");
         System.out.println("\nValidating g4...");
         printValidation(g4);
 
         // Invalid: missing YOU
-        Game g5 = new Parser().parse("T5 {5}: HUEY 10+2+D!10 | DEALER 9+8 >> LOSE{5}");
+        Game g5 = new Parser().parse("T5 {5}: Huey 10+2+D!10 | Dealer 9+8 >> Lose{5}");
         System.out.println("\nValidating g5...");
         printValidation(g5);
     }

@@ -9,7 +9,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ray.parser;
+package ray.compiler;
 
 import ray.model.*;
 import ray.type.Player;
@@ -72,7 +72,7 @@ public class Parser {
         Pattern p = Pattern.compile("(\\w+)\\s*\\{\\s*(\\d+)\\s*(?:,\\s*(\\d+)\\s*)?\\}");
         Matcher m = p.matcher(text);
         if (!m.find())
-            throw new IllegalArgumentException("Invalid label/bet format: " + text);
+            throw new IllegalArgumentException("Invalid label/bet format: '" + text+"'");
 
         game.label = m.group(1);
         game.bets.add(Integer.parseInt(m.group(2)));
@@ -95,7 +95,7 @@ public class Parser {
         text = text.replaceAll("\s*\\+\s*","+");
         Matcher m = p.matcher(text);
         if (!m.find())
-            throw new IllegalArgumentException("Invalid hand format: " + text);
+            throw new IllegalArgumentException("Invalid hand format: '" + text+"'");
 
         Hand hand = new Hand();
         hand.who = Player.valueOf(m.group(1));
@@ -131,7 +131,7 @@ public class Parser {
         directivePart = directivePart.trim();
 
         if (directivePart.length() < 2 || directivePart.charAt(1) != '!')
-            throw new IllegalArgumentException("Invalid directive syntax: " + directivePart);
+            throw new IllegalArgumentException("Invalid directive syntax: '" + directivePart+"'");
 
         char type = directivePart.charAt(0);
         dir.type = type;
@@ -150,7 +150,7 @@ public class Parser {
                     dir.splitHands.add(cards);
                 }
             } else {
-                throw new IllegalArgumentException("Invalid split directive: " + directivePart);
+                throw new IllegalArgumentException("Invalid split directive: '" + directivePart+"'");
             }
         } else if (type == 'D') {
             // Parse D!10
@@ -160,7 +160,7 @@ public class Parser {
                 for (String c : m.group(1).split("\\+"))
                     if (!c.isEmpty()) dir.extraCards.add(c);
             } else {
-                throw new IllegalArgumentException("Invalid double-down directive: " + directivePart);
+                throw new IllegalArgumentException("Invalid double-down directive: '" + directivePart+"'");
             }
         } else {
             throw new IllegalArgumentException("Unknown directive type: " + type);
@@ -185,11 +185,12 @@ public class Parser {
     }
 
     Outcome parseOutcome(String text) {
+         text = text.replaceAll("\\s","");
         Pattern p = Pattern.compile("(Win|Lose|Push|Bust|Blackjack|Charlie)\\s*\\{(\\d+)\\}",
                 Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(text);
         if (!m.find())
-            throw new IllegalArgumentException("Invalid outcome format: " + text);
+            throw new IllegalArgumentException("Invalid outcome format: '" + text+"'");
         Outcome o = new Outcome();
         o.result = m.group(1).toUpperCase();
         o.amount = Integer.parseInt(m.group(2));

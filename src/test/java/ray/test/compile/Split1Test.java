@@ -1,4 +1,4 @@
-package ray.test.validate;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -12,35 +12,26 @@ package ray.test.validate;/*
 
 import junit.framework.TestCase;
 import ray.model.Game;
-import ray.parser.Parser;
-import ray.parser.Validator;
-
-import java.util.ArrayList;
-import java.util.List;
+import ray.compiler.Parser;
+import ray.generator.ShoeBuilder;
 
 /**
- * This class tests ray syntax error.
+ * This class exercises the split directive.
  * @author Ron.Coleman
  */
-public class NoPlayerSyntaxTest extends TestCase {
+public class Split1Test extends TestCase {
     public void test() {
 
-        String ray = "T0 {5}: >> Lose{5}";
-
-        List<String> errors = new ArrayList<>();
+        String ray = "T7 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
 
         Parser parser = new Parser();
-        try {
-            Game game = parser.parse(ray);
 
-            errors = Validator.validate(game);
-            assert errors.size() == 1;
-        }
-        catch(Exception _) {
-            assert false: "syntax error";
-        }
+        Game game = parser.parse(ray);
 
-        for(String error: errors)
-            System.out.println("error: "+error);
+        ShoeBuilder shoe = new ShoeBuilder();
+
+        System.setProperty("ray.seed","0");
+
+        shoe.generate(game);
     }
 }

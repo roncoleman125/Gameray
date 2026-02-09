@@ -1,4 +1,4 @@
-package ray.test.build;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -11,27 +11,24 @@ package ray.test.build;/*
  */
 
 import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
-import ray.model.Game;
-import ray.parser.Parser;
+import ray.compiler.Parser;
 
 /**
- * This class exercises an implied hit (ie, without the hit directive).
+ * This class exercises an illegal directive, "H!".
  * @author Ron.Coleman
  */
-public class Hit1Test extends TestCase {
+public class Hit4Test extends TestCase {
     public void test() {
 
-        String ray = "T3 {5}: You 3+4+J | Dealer 10+8 >> Lose{5}";
+        String ray = "T6 {5}: You 3+4+H!J | Dealer 10+8 >> Lose{5}";
 
         Parser parser = new Parser();
 
-        Game game = parser.parse(ray);
-
-        ShoeBuilder shoe = new ShoeBuilder();
-
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        try {
+            parser.parse(ray);
+        }
+        catch(IllegalArgumentException e) {
+            assert true;
+        }
     }
 }

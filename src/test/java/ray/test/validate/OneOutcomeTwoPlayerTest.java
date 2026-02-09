@@ -10,30 +10,14 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import ray.model.Game;
-import ray.parser.Parser;
-import ray.parser.Validator;
-
-import java.util.List;
-
 /**
  * This class tests a missing outcome.
  * @author Ron.Coleman
  */
-public class OneOutcomeTwoPlayerTest extends TestCase {
+public class OneOutcomeTwoPlayerTest extends AbstractInvalidTest {
     public void test() {
         String ray = "T4 {5,15}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}";
 
-        Parser parser = new Parser();
-
-        Game game = parser.parse(ray);
-        
-        List<String> errors = Validator.validate(game);
-
-        for(String error: errors)
-            System.out.println("error: "+error);
-
-        assert !errors.isEmpty();
+        super.test(ray);
     }
 }

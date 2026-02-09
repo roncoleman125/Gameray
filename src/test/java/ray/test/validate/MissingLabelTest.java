@@ -1,4 +1,4 @@
-package ray.test.build;/*
+/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,27 +10,17 @@ package ray.test.build;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import ray.generator.ShoeBuilder;
-import ray.model.Game;
-import ray.parser.Parser;
+package ray.test.validate;
 
 /**
- * This class exercises spaces around hits.
- * @author Ron.Coleman
+ * This class...
+ *
+ * @author ronnc
  */
-public class Space2Test extends TestCase {
+public class MissingLabelTest extends AbstractRayTest {
     public void test() {
-        String ray = "T12 {5}: You 7+7+P!{2+ 4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "{5}: You 3+10 | Dealer 4+10+7 >> Lose{5}";
 
-        Parser parser = new Parser();
-
-        Game game = parser.parse(ray);
-
-        ShoeBuilder shoe = new ShoeBuilder();
-
-        System.setProperty("ray.seed","0");
-
-        shoe.generate(game);
+        super.test(ray);
     }
 }

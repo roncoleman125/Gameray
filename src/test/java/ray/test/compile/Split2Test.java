@@ -1,4 +1,4 @@
-package ray.test.validate;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -10,15 +10,28 @@ package ray.test.validate;/*
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * This class...
- *
- * @author ronnc
- */
-public class YouHueyDealerTest extends AbstractValidTest {
-    public void test() {
-        String ray = "T4 {5,15}: You 3+3 | Huey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}";
+import junit.framework.TestCase;
+import ray.generator.ShoeBuilder;
+import ray.model.Game;
+import ray.compiler.Parser;
 
-        super.test(ray);
+/**
+ * This class exercises the split directive with three cards.
+ * @author Ron.Coleman
+ */
+public class Split2Test extends TestCase {
+    public void test() {
+
+        String ray = "T7 {5}: You 7+7+P!{2+4,5+4+3} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+
+        Parser parser = new Parser();
+
+        Game game = parser.parse(ray);
+
+        ShoeBuilder shoe = new ShoeBuilder();
+
+        System.setProperty("ray.seed","0");
+
+        shoe.generate(game);
     }
 }

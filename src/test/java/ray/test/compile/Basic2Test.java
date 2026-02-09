@@ -1,4 +1,4 @@
-package ray.test.build;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -11,18 +11,19 @@ package ray.test.build;/*
  */
 
 import junit.framework.TestCase;
-import ray.model.Game;
-import ray.parser.Parser;
 import ray.generator.ShoeBuilder;
+import ray.model.Game;
+import ray.compiler.Parser;
 
 /**
- * This class exercises the split directive.
- * @author Ron.Coleman
+ * This class...
+ *
+ * @author ronnc
  */
-public class Split1Test extends TestCase {
+public class Basic2Test extends TestCase {
     public void test() {
 
-        String ray = "T7 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> WIN{5}, PUSH{5}";
+        String ray = "T1 {5}: You 3+K | Dealer 4+10+7 >> Lose{5}";
 
         Parser parser = new Parser();
 

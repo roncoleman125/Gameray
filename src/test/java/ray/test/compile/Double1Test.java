@@ -1,4 +1,4 @@
-package ray.test.build;/*
+package ray.test.compile;/*
  * Copyright (c) 2026 Hexant, LLC
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -13,15 +13,15 @@ package ray.test.build;/*
 import junit.framework.TestCase;
 import ray.generator.ShoeBuilder;
 import ray.model.Game;
-import ray.parser.Parser;
+import ray.compiler.Parser;
 
 /**
- * This class exercises spaces around hits.
+ * This class exercises the double-down directive.
  * @author Ron.Coleman
  */
-public class Space1Test extends TestCase {
+public class Double1Test extends TestCase {
     public void test() {
-        String ray = "T10 {5}: You 3 + 2 + J + 2 | Dealer 7+10+4 >> Lose{5}";
+        String ray = "T2 {5}: You 3+2+D!J | Dealer 7+10+4 >> Lose{5}";
 
         Parser parser = new Parser();
 

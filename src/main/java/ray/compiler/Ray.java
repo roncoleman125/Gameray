@@ -12,11 +12,9 @@
 
 package ray.compiler;
 
-import ray.generator.ShoeFileBuilder;
+import ray.generator.ShoeBuilderTarget;
 import ray.model.Game;
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
 public class Ray {
     public static void main(String[] args) {
         if(args.length < 1) {
-            System.out.println("usage: ray input-path [output-path]");
+            System.out.println("usage: ray.compiler.Ray input-path [output-path]");
             System.exit(0);
         }
 
@@ -67,9 +65,10 @@ public class Ray {
                 games.add(game);
             }
 
-            Writer target = (outputPath == null) ? new StringWriter(): new FileWriter(outputPath);
-            ShoeFileBuilder builder =
-                    new ShoeFileBuilder(new PrintWriter(target));
+            PrintWriter target = (outputPath == null) ?
+                    new PrintWriter(System.out) : new PrintWriter(new FileWriter(outputPath));
+            ShoeBuilderTarget builder =
+                    new ShoeBuilderTarget(target);
 
             builder.generate(games);
 

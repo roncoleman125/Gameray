@@ -12,23 +12,20 @@
 
 package ray.generator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.Writer;
 
 /**
  * This class builds a shoe and writes the statements to a file.
  * @author Ron.Coleman
  */
-public class ShoeFileBuilder extends ShoeBuilder {
+public class ShoeBuilderTarget extends ShoeBuilder {
     PrintWriter writer;
 
     /**
      * Constructor
      * @param writer Writer to output the shoe
      */
-    public ShoeFileBuilder(PrintWriter writer) {
+    public ShoeBuilderTarget(PrintWriter writer) {
         this.writer = writer;
     }
 
@@ -36,6 +33,7 @@ public class ShoeFileBuilder extends ShoeBuilder {
     void write(String stt) {
         try {
             writer.println(stt);
+            writer.flush();
         }
         catch(Exception _) { }
     }

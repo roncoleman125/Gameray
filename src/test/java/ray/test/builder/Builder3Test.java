@@ -16,13 +16,14 @@ import junit.framework.TestCase;
 import ray.compiler.Ray;
 
 /**
- * This class exercises the compiler using a basic test input file.
+ * This class exercises the compiler using a basic test input and output file.
  * @author Ron.Coleman
  */
-public class Builder1Test extends TestCase {
-    static final String INPUT_PATH = "src/test/test1.ray";
+public class Builder3Test extends TestCase {
+    static final String INPUT_PATH = "src/test/test2.ray";
+    static final String OUTPUT_PATH = "c:/tmp/ShoeXzy.java";
 
     public void test() {
-        Ray.main(new String[]{INPUT_PATH});
+        Ray.main(new String[]{INPUT_PATH, OUTPUT_PATH});
     }
 }

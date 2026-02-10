@@ -19,8 +19,8 @@ import ray.compiler.Ray;
  * This class exercises the compiler using a basic test input file.
  * @author Ron.Coleman
  */
-public class Builder1Test extends TestCase {
-    static final String INPUT_PATH = "src/test/test1.ray";
+public class Builder2Test extends TestCase {
+    static final String INPUT_PATH = "src/test/test2.ray";
 
     public void test() {
         Ray.main(new String[]{INPUT_PATH});

@@ -1,0 +1,3 @@
+# A game specification
+T0 {5}: You 3+10 | Dealer 4+10+7 >> Lose{5}
+T1 {5}: You 3+K | Dealer 4+10+7 >> Lose{5}

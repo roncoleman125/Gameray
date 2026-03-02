@@ -24,6 +24,7 @@ import java.util.List;
  */
 // === Data Models ===
 public class Game {
+    public String source;
     public String label;
     public List<Integer> bets = new ArrayList<>();      // supports one or two bets
     //        Hand playerHand;

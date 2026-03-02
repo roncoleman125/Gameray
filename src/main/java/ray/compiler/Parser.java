@@ -24,6 +24,7 @@ public class Parser {
         line = line.trim();
 
         Game game = new Game();
+        game.source = line;
 
         String[] parts = line.split(">>");
         if (parts.length != 2)

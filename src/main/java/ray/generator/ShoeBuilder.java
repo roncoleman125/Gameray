@@ -69,7 +69,7 @@ public class ShoeBuilder {
 
         play(game);
 
-        epilog();
+        epilogue();
     }
 
     /**
@@ -85,7 +85,7 @@ public class ShoeBuilder {
             reset();
         }
 
-        epilog();
+        epilogue();
     }
 
     void reset() {
@@ -112,9 +112,9 @@ public class ShoeBuilder {
     }
 
     /**
-     * Writes code generation epilog
+     * Writes code generation epilogue
      */
-    void epilog() {
+    void epilogue() {
         write(indent(1)+"}");
         write("}");
         comment(0,"END generated code");
@@ -125,7 +125,7 @@ public class ShoeBuilder {
      * @param game Game
      */
     void start(Game game) {
-        comment("Game "+game.label);
+        comment("Game "+game.source);
 
         comment("Round 1");
         for(Player player: players) {

@@ -20,6 +20,10 @@ import java.util.*;
 
 import static ray.type.Player.*;
 
+/**
+ * This class does validation of the game model.
+ * @author Ron.Coleman
+ */
 public class Validator {
 
     /**

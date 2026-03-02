@@ -80,6 +80,11 @@ public class Ray {
         System.exit(rc);
     }
 
+    /**
+     * Convenience method for reporting errors.
+     * @param lineno Line number
+     * @param msg Error message
+     */
     static void reportError(int lineno, String msg) {
         System.err.println(lineno+": "+msg);
     }

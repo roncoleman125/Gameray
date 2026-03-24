@@ -25,7 +25,7 @@ import java.util.List;
  * @author ronnc
  */
 abstract public class AbstractRayTest extends TestCase {
-    protected void test(String ray) {
+    protected void test(String ray) throws Exception {
         Parser parser = new Parser();
 
         List<String> errors =  null;
@@ -42,6 +42,7 @@ abstract public class AbstractRayTest extends TestCase {
         }
         catch(IllegalArgumentException e) {
             System.out.println("syntax error: "+e.getMessage());
+            throw new Exception(e);
         }
     }
 }

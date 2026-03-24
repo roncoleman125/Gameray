@@ -23,6 +23,8 @@ import java.util.List;
  * @author Ron.Coleman
  */
 public class Ray {
+    public static int rc = 0;
+
     public static void main(String[] args) {
         if(args.length < 1) {
             System.out.println("usage: ray.compiler.Ray input-path [output-path]");
@@ -33,7 +35,6 @@ public class Ray {
         String outputPath = args.length < 2 ? null : args[1];
 
         int lineno = 0;
-        int rc = 0;
 
         List<Game> games = new ArrayList<>();
 
@@ -77,7 +78,6 @@ public class Ray {
             reportError(lineno, e.getMessage());
             rc = 1;
         }
-        System.exit(rc);
     }
 
     /**
@@ -86,6 +86,6 @@ public class Ray {
      * @param msg Error message
      */
     static void reportError(int lineno, String msg) {
-        System.err.println(lineno+": "+msg);
+        System.err.println("line "+lineno+": "+msg);
     }
 }

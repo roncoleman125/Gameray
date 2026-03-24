@@ -18,7 +18,7 @@ package ray.test.validate;
  * @author ronnc
  */
 public class MissingLabelTest extends AbstractRayTest {
-    public void test() {
+    public void test() throws Exception {
         String ray = "{5}: You 3+10 | Dealer 4+10+7 >> Lose{5}";
 
         super.test(ray);

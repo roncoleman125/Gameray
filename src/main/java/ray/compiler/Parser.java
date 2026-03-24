@@ -13,6 +13,8 @@ package ray.compiler;
 
 import ray.model.*;
 import ray.type.Player;
+import ray.type.Suit;
+import ray.util.Helper;
 
 import java.util.*;
 import java.util.regex.*;
@@ -39,7 +41,7 @@ public class Parser {
         // Step 1: parse label and bets
         int colonIdx = leftPart.indexOf(':');
         if (colonIdx < 0)
-            throw new IllegalArgumentException("Missing ':' after bet section");
+            throw new IllegalArgumentException("missing ':' after bet section");
 
         String header = leftPart.substring(0, colonIdx).trim(); // T1 {5} or T1 {5,10}
         String body = leftPart.substring(colonIdx + 1).trim();  // YOU 10+4 | DEALER 9+3+5
@@ -63,23 +65,56 @@ public class Parser {
 
         return game;
     }
-
     /**
-     * Parses label and 1–2 bets, e.g.:
+     * Parses label and 1–N bets, e.g.:
      *   T1 {5}
      *   T2 {5,10}
+     *   T3 {5,10,15}
      */
-    void parseLabelAndBet(String text, Game game) {
-        Pattern p = Pattern.compile("(\\w+)\\s*\\{\\s*(\\d+)\\s*(?:,\\s*(\\d+)\\s*)?\\}");
+    private static void parseLabelAndBet(String text, Game game) {
+        Pattern p = Pattern.compile("(\\w+)\\s*\\{\\s*([^}]*)\\}");
         Matcher m = p.matcher(text);
         if (!m.find())
-            throw new IllegalArgumentException("Invalid label/bet format: '" + text+"'");
+            throw new IllegalArgumentException("Invalid label/bet format: " + text);
 
         game.label = m.group(1);
-        game.bets.add(Integer.parseInt(m.group(2)));
-        if (m.group(3) != null)
-            game.bets.add(Integer.parseInt(m.group(3)));
+
+        String betsPart = m.group(2); // everything inside { ... }
+
+        String[] tokens = betsPart.split(",");
+        for (String t : tokens) {
+            t = t.trim();
+            if (!t.isEmpty()) {
+                game.bets.add(Integer.parseInt(t));
+            }
+        }
+
+        // Optional guard: enforce at least 1 and at most 3 bets (per your requirement)
+        if (game.bets.isEmpty() || game.bets.size() > 3) {
+            throw new IllegalArgumentException(
+                    "invalid number of bets (" + game.bets.size() + "), expected 1 to 3.");
+        }
     }
+//    /**
+//     * Parses label and 1–3 bets, e.g.:
+//     *   T1 {5}
+//     *   T2 {5,10}
+//     */
+//    void parseLabelAndBet(String text, Game game) {
+//        Pattern p = Pattern.compile("(\\w+)\\s*\\{\\s*(\\d+)\\s*(?:,\\s*(\\d+)\\s*)?\\}");
+//        Matcher m = p.matcher(text);
+//        if (!m.find())
+//            throw new IllegalArgumentException("invalid label/bet format: '" + text+"'");
+//
+//        game.label = m.group(1);
+////        game.bets.add(Integer.parseInt(m.group(2)));
+////        if (m.group(3) != null)
+////            game.bets.add(Integer.parseInt(m.group(3)));
+//        for(int betno=2; betno < m.groupCount(); betno++) {
+//            int bet = Integer.parseInt(m.group(betno));
+//            game.bets.add(bet);
+//        }
+//    }
 
     /**
      * Parses a hand like:
@@ -106,16 +141,25 @@ public class Parser {
         int exclIdx = cardsPart.indexOf('!');
         if (exclIdx > 0) {
             String basePart = cardsPart.substring(0, exclIdx - 1); // everything before the directive letter
-            for (String c : basePart.split("\\+")) {
-                if (!c.isEmpty() && Character.isLetterOrDigit(c.charAt(0)))
-                    hand.cards.add(c);
+            for (String card : basePart.split("\\+")) {
+                if (!card.isEmpty() && Character.isLetterOrDigit(card.charAt(0)))
+                    hand.cards.add(card);
             }
 
             // Pass starting at directive letter, e.g., "P!{2+4,5+9}" or "D!10"
             hand.directive = parseDirective(cardsPart.substring(exclIdx - 1));
         } else {
-            for (String c : cardsPart.split("\\+"))
-                if (!c.isEmpty()) hand.cards.add(c);
+            for (String card : cardsPart.split("\\+")) {
+                if(Helper.getRank(card).isEmpty())
+                    throw new IllegalArgumentException("invalid card rank: '" + text+"'");
+                try {
+                    Helper.getSuit(card);
+                }
+                catch(AssertionError _) {
+                    throw new IllegalArgumentException("invalid card suit: '" + text+"'");
+                }
+                /*if (!card.isEmpty())*/ hand.cards.add(card);
+            }
         }
 
         return hand;
@@ -132,7 +176,7 @@ public class Parser {
         directivePart = directivePart.trim();
 
         if (directivePart.length() < 2 || directivePart.charAt(1) != '!')
-            throw new IllegalArgumentException("Invalid directive syntax: '" + directivePart+"'");
+            throw new IllegalArgumentException("invalid directive syntax: '" + directivePart+"'");
 
         char type = directivePart.charAt(0);
         dir.type = type;
@@ -151,7 +195,7 @@ public class Parser {
                     dir.splitHands.add(cards);
                 }
             } else {
-                throw new IllegalArgumentException("Invalid split directive: '" + directivePart+"'");
+                throw new IllegalArgumentException("invalid split directive: '" + directivePart+"'");
             }
         } else if (type == 'D') {
             // Parse D!10
@@ -187,11 +231,11 @@ public class Parser {
 
     Outcome parseOutcome(String text) {
          text = text.replaceAll("\\s","");
-        Pattern p = Pattern.compile("(Win|Lose|Push|Bust|Blackjack|Charlie)\\s*\\{(\\d+)\\}",
+        Pattern p = Pattern.compile("(Win|Lose|Push|Bust|Break|Blackjack|Charlie)\\s*\\{(\\d+)\\}",
                 Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(text);
         if (!m.find())
-            throw new IllegalArgumentException("Invalid outcome format: '" + text+"'");
+            throw new IllegalArgumentException("invalid outcome format: '" + text+"'");
         Outcome o = new Outcome();
         o.result = m.group(1).toUpperCase();
         o.amount = Integer.parseInt(m.group(2));
@@ -205,7 +249,8 @@ public class Parser {
                 "T1 {5}: You 7+7+P!{2+4,5+9} | Dealer 10+6 >> Win{5}, Push{5}",
                 "T2 {5}: Huey 10+2+D!7 | Dealer 9+8 >> Win{10}",
                 "T3 {5}: Dewey 9+2+5 | Dealer 10+7 >> Win{5}",
-                "T4 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}"
+                "T4 {5,15}: You 3+3 | Dewey 9+2+5 | Dealer 10+7 >> Win{5}, Win{15}",
+                "T5 {5,5,5}: Huey K+6+2 | You 10+5+4 | Dewey 10+10 | Dealer K+7 >> Win{5}, Win{5}, Win{5}"
         };
 
         Parser parser = new Parser();

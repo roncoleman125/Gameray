@@ -10,23 +10,19 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ray.test.validate;
+package ray.test.builder;
+
+import junit.framework.TestCase;
+import ray.compiler.Ray;
 
 /**
- * This class...
- *
- * @author ronnc
+ * This class exercises the compiler for a valid suit.
+ * @author Ron.Coleman
  */
-abstract public class AbstractInvalidTest extends AbstractRayTest {
-    protected void test(String ray) {
-        boolean failed = false;
-        try {
-            super.test(ray);
-        }
-        catch(Exception | AssertionError _) {
-            failed = true;
-        }
+public class Suited1Test extends TestCase {
+    static final String INPUT_PATH = "src/test/ray/test3.ray";
 
-        assert failed: "expected failure "+ray;
+    public void test() {
+        Ray.main(new String[]{INPUT_PATH});
     }
 }
